@@ -1,10 +1,10 @@
--- MM2 script - for gumball --
+-- MM2 script - For gumball --
 -- By MegabyteGG --
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
 
--- Create UI
+-- UI Setup
 local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
 ScreenGui.Name = "NeonMM2Menu"
 
@@ -35,54 +35,4 @@ Title.Text = "🔹 MM2 Neon Menu"
 Title.Font = Enum.Font.GothamBold
 Title.TextSize = 16
 Title.Size = UDim2.new(1, 0, 0, 30)
-Title.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-Title.TextColor3 = Color3.fromRGB(0, 255, 255)
-
-local function addButton(name, callback)
-	local button = Instance.new("TextButton", ScrollingFrame)
-	button.Size = UDim2.new(1, -10, 0, 30)
-	button.Position = UDim2.new(0, 5, 0, 0)
-	button.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-	button.TextColor3 = Color3.fromRGB(255, 255, 255)
-	button.Font = Enum.Font.Gotham
-	button.Text = name
-	button.TextSize = 14
-	button.MouseButton1Click:Connect(callback)
-end
-
--- Actual features
-addButton("Speed Boost (Safe)", function()
-	local hum = LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-	if hum then
-		for i = 16, 60, 2 do
-			hum.WalkSpeed = i
-			wait(0.05)
-		end
-	end
-end)
-
-addButton("Reset Speed", function()
-	local hum = LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-	if hum then hum.WalkSpeed = 16 end
-end)
-
-addButton("Grab Gun (Safe)", function()
-	local gun = workspace:FindFirstChild("GunDrop")
-	if gun then
-		Character:MoveTo(gun.Position + Vector3.new(0, 2, 0))
-	else
-		warn("Gun not dropped.")
-	end
-end)
-
-addButton("Teleport to Lobby", function()
-	Character:MoveTo(Vector3.new(0, 100, 0))
-end)
-
-addButton("Respawn Self", function()
-	LocalPlayer:Kick("Respawning (Rejoin to load character)")
-end)
-
-addButton("CLOSE", function()
-	ScreenGui:Destroy()
-end)
+Title
