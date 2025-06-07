@@ -1,0 +1,111 @@
+-- MM2 script for Mr.Gumball
+-- By MegabyteGG (Be very cautious)
+
+local neonColor = Color3.fromRGB(0, 255, 200) -- Main neon teal
+local bgColor = Color3.fromRGB(10, 10, 20)
+
+-- UI Setup
+local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
+local Frame = Instance.new("Frame", ScreenGui)
+Frame.Size = UDim2.new(0, 300, 0, 370)
+Frame.Position = UDim2.new(0.7, 0, 0.2, 0)
+Frame.BackgroundColor3 = bgColor
+Frame.BorderColor3 = neonColor
+Frame.BorderSizePixel = 2
+
+local UICorner = Instance.new("UICorner", Frame)
+UICorner.CornerRadius = UDim.new(0, 12)
+
+local UIStroke = Instance.new("UIStroke", Frame)
+UIStroke.Color = neonColor
+UIStroke.Thickness = 2
+
+local title = Instance.new("TextLabel", Frame)
+title.Text = "⚡ MM2 Mod Menu ⚡"
+title.Size = UDim2.new(1, 0, 0, 40)
+title.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
+title.TextColor3 = neonColor
+title.Font = Enum.Font.FredokaOne
+title.TextSize = 24
+title.BorderSizePixel = 0
+
+local corner = Instance.new("UICorner", title)
+corner.CornerRadius = UDim.new(0, 8)
+
+-- Button Creator
+local function createButton(name, yOffset, callback)
+	local btn = Instance.new("TextButton", Frame)
+	btn.Text = name
+	btn.Position = UDim2.new(0.1, 0, 0, 50 + yOffset)
+	btn.Size = UDim2.new(0.8, 0, 0, 32)
+	btn.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
+	btn.TextColor3 = neonColor
+	btn.Font = Enum.Font.GothamBold
+	btn.TextSize = 18
+
+	local corner = Instance.new("UICorner", btn)
+	corner.CornerRadius = UDim.new(0, 8)
+
+	local stroke = Instance.new("UIStroke", btn)
+	stroke.Color = neonColor
+	stroke.Thickness = 1.2
+
+	btn.MouseButton1Click:Connect(callback)
+end
+
+-- Functional Buttons
+createButton("🟢 Show Roles", 0, function()
+	for _, player in pairs(game.Players:GetPlayers()) do
+		if player.Character then
+			print(player.Name .. " - " .. (player.Backpack:FindFirstChild("Knife") and "Murderer" or player.Backpack:FindFirstChild("Gun") and "Sheriff" or "Innocent"))
+		end
+	end
+end)
+
+createButton("🔵 Grab Gun", 40, function()
+	local gunDrop = workspace:FindFirstChild("GunDrop")
+	if gunDrop then
+		game.Players.LocalPlayer.Character:MoveTo(gunDrop.Position)
+	end
+end)
+
+createButton("⚪ Teleport to Murderer", 80, function()
+	for _, plr in pairs(game.Players:GetPlayers()) do
+		if plr ~= game.Players.LocalPlayer and plr.Backpack:FindFirstChild("Knife") then
+			game.Players.LocalPlayer.Character:MoveTo(plr.Character.HumanoidRootPart.Position + Vector3.new(0, 5, 0))
+		end
+	end
+end)
+
+createButton("🟣 Kill All (Silent)", 120, function()
+	local event = game.ReplicatedStorage:FindFirstChild("KnifeHit")
+	for _, plr in pairs(game.Players:GetPlayers()) do
+		if plr ~= game.Players.LocalPlayer and plr.Character then
+			event:FireServer({plr.Character:FindFirstChild("Humanoid")})
+		end
+	end
+end)
+
+createButton("🟠 Speed Boost", 160, function()
+	game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 100
+end)
+
+createButton("🔴 Reset Speed", 200, function()
+	game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+end)
+
+createButton("🟡 Invisible", 240, function()
+	for _, part in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+		if part:IsA("BasePart") then
+			part.Transparency = 1
+		end
+	end
+end)
+
+createButton("🔄 Reset", 280, function()
+	game.Players.LocalPlayer:LoadCharacter()
+end)
+
+createButton("❌ Close Menu", 320, function()
+	ScreenGui:Destroy()
+end)
